@@ -1,0 +1,28 @@
+branches:
+  only:
+  - master
+
+shallow_clone: true
+
+image: Visual Studio 2017
+version: 0.1.{build}
+configuration: Release
+
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+
+build:
+  verbosity: minimal
+  publish_nuget: true
+  publish_nuget_symbols: true
+
+before_build:
+  - dotnet restore
+
+test:
+  assemblies:
+    only:
+      - SlackWebhook.Tests.dll

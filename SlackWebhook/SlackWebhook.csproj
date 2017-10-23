@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>Latest</LangVersion>
+    <OutputType>Library</OutputType>
+    <PackageId>SlackWebhook</PackageId>
+    <PackageVersion>1.0.0</PackageVersion>
+    <Authors>Michael Dahl</Authors>
+    <Description>Client used to build and send Slack messages to a channel, using a slack incoming webhook which can easily configured</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <Copyright>Copyright 2017 (c) Michael Dahl. All Rights reserved.</Copyright>
+    <PackageTags>slack webhook client</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+  </ItemGroup>
+</Project>

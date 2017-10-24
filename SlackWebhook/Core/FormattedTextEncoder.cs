@@ -1,4 +1,4 @@
-﻿namespace SlackWebhook
+﻿namespace SlackWebhook.Core
 {
     /// <summary>
     /// Handles escaping characters which the Slack webhook expects to be HTML 

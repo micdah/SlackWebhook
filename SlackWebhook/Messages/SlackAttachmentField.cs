@@ -1,5 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using SlackWebhook.Exceptions;
 
 namespace SlackWebhook.Messages
 {
@@ -8,6 +12,17 @@ namespace SlackWebhook.Messages
     /// </summary>
     public class SlackAttachmentField
     {
+        public SlackAttachmentField()
+        {
+        }
+
+        public SlackAttachmentField(SlackAttachmentField source)
+        {
+            Title = source.Title;
+            Value = source.Value;
+            Short = source.Short;
+        }
+
         /// <summary>
         /// Title of field
         /// </summary>
@@ -35,10 +50,31 @@ namespace SlackWebhook.Messages
         [JsonProperty("short")]
         public bool Short { get; set; }
 
-        public bool Validate()
+        /// <summary>
+        /// Validates the current state of the attachment field
+        /// </summary>
+        /// <param name="validationErrors"></param>
+        /// <returns></returns>
+        public bool Validate(ref ICollection<ValidationError> validationErrors)
         {
-            // TODO
-            return true;
+            if (validationErrors == null)
+            {
+                validationErrors = new List<ValidationError>();
+            }
+
+            if (string.IsNullOrEmpty(Title))
+            {
+                validationErrors.Add(new ValidationError(nameof(SlackAttachmentField), nameof(Title),
+                    "Title is a required field"));
+            }
+
+            if (string.IsNullOrEmpty(Value))
+            {
+                validationErrors.Add(new ValidationError(nameof(SlackAttachmentField), nameof(Value),
+                    "Value is a required field"));
+            }
+
+            return !validationErrors.Any();
         }
     }
 }

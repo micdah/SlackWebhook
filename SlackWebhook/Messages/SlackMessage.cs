@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
+using SlackWebhook.Exceptions;
 
 namespace SlackWebhook.Messages
 {
@@ -9,17 +10,33 @@ namespace SlackWebhook.Messages
     /// </summary>
     public class SlackMessage
     {
+        public SlackMessage()
+        {
+        }
+
+        internal SlackMessage(SlackMessage source)
+        {
+            Text = source.Text;
+            Username = source.Username;
+            IconUrl = source.IconUrl;
+            IconEmoji = source.IconEmoji;
+            EnableFormatting = source.EnableFormatting;
+            Attachments = source.Attachments?
+                .Select(a => new SlackAttachment(a))
+                .ToList();
+        }
+
         /// <summary>
         /// Message text which may contain formatting (unless 
         /// <see cref="EnableFormatting"/>  is deactivated) and can span 
         /// multiple lines.<para/>
         /// </summary>
         /// <remarks>
-        /// You can use the regular Slack formatting<para/>
+        /// You can use the regular Slack formatting
         /// <code>
         ///     *bold* `code` _italic_ ~strike~
         /// </code><para/>
-        /// and also include links<para/>
+        /// and also include links
         /// <code>
         ///     &lt;URL|title&gt;
         /// </code>
@@ -69,28 +86,44 @@ namespace SlackWebhook.Messages
         /// elements, such as <see cref="Attachments"/>)
         /// </summary>
         /// <returns>True if message is valid, false otherwise</returns>
-        public bool Validate()
+        public bool Validate(ref ICollection<ValidationError> validationErrors)
         {
+            if (validationErrors == null)
+            {
+                validationErrors = new List<ValidationError>();
+            }
+
             // Text is required
             if (string.IsNullOrEmpty(Text))
             {
-                return false;
+                validationErrors.Add(new ValidationError(nameof(SlackMessage), nameof(Text), 
+                    "Text is a required field"));
             }
 
             // May only set IconUrl OR IconEmoji
             if (IconUrl != null && IconEmoji != null)
             {
-                return false;
+                validationErrors.Add(new ValidationError(nameof(SlackMessage), nameof(IconUrl),
+                    $"Must not set both {nameof(IconUrl)} and {nameof(IconEmoji)}"));
+
+                validationErrors.Add(new ValidationError(nameof(SlackMessage), nameof(IconEmoji),
+                    $"Must not set both {nameof(IconUrl)} and {nameof(IconEmoji)}"));
             }
 
             // All attachments (if present) must be valid
             if (Attachments != null) 
             {
-                if (Attachments.Any(a => !a.Validate()))
-                    return false;
+                foreach (var attachment in Attachments)
+                {
+                    if (!attachment.Validate(ref validationErrors))
+                    {
+                        validationErrors.Add(new ValidationError(nameof(SlackMessage), nameof(Attachments),
+                            "Attachment validation failed"));
+                    }
+                }
             }
 
-            return true;
+            return !validationErrors.Any();
         }
     }
 }

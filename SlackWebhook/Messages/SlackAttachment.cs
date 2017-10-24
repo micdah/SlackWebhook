@@ -1,9 +1,10 @@
 ﻿using Newtonsoft.Json;
-using System.Drawing;
-using System.Collections.Generic;
 using Newtonsoft.Json.Serialization;
 using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using SlackWebhook.Exceptions;
 
 namespace SlackWebhook.Messages
 {
@@ -13,7 +14,7 @@ namespace SlackWebhook.Messages
     /// </summary>
     public class SlackAttachment
     {
-        private static readonly DateTimeOffset Jan1_1970 = new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.FromHours(0));
+        private static readonly DateTimeOffset EpochStart = new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.FromHours(0));
 
         /// <summary>
         /// Used to enable formatting of the <see cref="Text"/> field
@@ -29,6 +30,32 @@ namespace SlackWebhook.Messages
         /// Used to enable formatting of the <see cref="Fields"/> value fields
         /// </summary>
         public const string FormattingFields = "fields";
+
+        public SlackAttachment()
+        {
+        }
+
+        internal SlackAttachment(SlackAttachment source)
+        {
+            Title = source.Title;
+            TitleLink = source.TitleLink;
+            Text = source.Text;
+            PreText = source.PreText;
+            Fallback = source.Fallback;
+            Color = source.Color;
+            AuthorName = source.AuthorName;
+            AuthorLink = source.AuthorLink;
+            AuthorIcon = source.AuthorIcon;
+            ImageUrl = source.ImageUrl;
+            ThumbnailUrl = source.ThumbnailUrl;
+            Footer = source.Footer;
+            FooterIcon = source.FooterIcon;
+            Timestamp = source.Timestamp;
+            Fields = source.Fields?
+                .Select(f => new SlackAttachmentField(f))
+                .ToList();
+            EnableFormatting = source.EnableFormatting?.ToList();
+        }
 
         /// <summary>
         /// Title of attachment (required)
@@ -205,7 +232,7 @@ namespace SlackWebhook.Messages
         /// of Nov 29th, 1973.
         /// </remarks>
         [JsonProperty("ts")]
-        public int Timestamp { get; set; }
+        public int? Timestamp { get; set; }
 
         /// <summary>
         /// Fields shown as a table inside the message attachment (optional)
@@ -237,30 +264,50 @@ namespace SlackWebhook.Messages
         /// <param name="timestamp">Timestamp to set epohc time from</param>
         public void SetTimestamp(DateTimeOffset timestamp) 
         {
-            Timestamp = (int)(timestamp - Jan1_1970).TotalSeconds;
+            Timestamp = (int)(timestamp - EpochStart).TotalSeconds;
         }
 
         /// <summary>
         /// Validates the current state of the attachment (including any nested
         /// elements, such as <see cref="Fields"/>)
         /// </summary>
+        /// <param name="validationErrors"></param>
         /// <returns>True if the attachment is valid, false otherwise</returns>
-        public bool Validate() 
+        public bool Validate(ref ICollection<ValidationError> validationErrors) 
         {
+            if (validationErrors == null)
+            {
+                validationErrors = new List<ValidationError>();
+            }
+
             // Title is required
             if (string.IsNullOrEmpty(Title))
-                return false;
+            {
+                validationErrors.Add(new ValidationError(nameof(SlackAttachment), nameof(Title), 
+                    "Title is a required field"));
+            }
+
+            // Timestamp must be positive
+            if (Timestamp.HasValue && Timestamp.Value < 0)
+            {
+                validationErrors.Add(new ValidationError(nameof(SlackAttachment), nameof(Timestamp), 
+                    "Must be non-negative value"));
+            }
 
             // Validate any fields (if present)
             if (Fields != null)
             {
-                if (Fields.Any(f => !f.Validate()))
+                foreach (var field in Fields)
                 {
-                    return false;
+                    if (!field.Validate(ref validationErrors))
+                    {
+                        validationErrors.Add(new ValidationError(nameof(SlackAttachment), nameof(Fields),
+                            "Field validation failed"));
+                    }
                 }
             }
-            
-            return true;
+
+            return !validationErrors.Any();
         }
     }
 }

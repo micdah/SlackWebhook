@@ -14,7 +14,7 @@ namespace SlackWebhook
         /// Build <see cref="SlackMessage"/> based on current state of the builder
         /// </summary>
         /// <returns>New message</returns>
-        /// <exception cref="SlackMessageValidationException">
+        /// <exception cref="Exceptions.SlackMessageValidationException">
         /// Thrown if validation of the message fails, such as if a required field is missing.
         /// <para/>
         /// Uses <see cref="SlackMessage.Validate"/> to perform validation.

@@ -199,5 +199,28 @@ namespace SlackWebhook
         /// </remarks>
         /// <param name="epochTime">Epoch timestamp</param>
         ISlackAttachmentBuilder WithTimestamp(int epochTime);
+
+        /// <summary>
+        /// With attachment field shown as a table inside the message attachment
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="enableFormatting"/> is enabled, you can use Slack message formatting in 
+        /// <paramref name="value"/> and it will automatically be encoded according to slack encoding rules.
+        /// </remarks>
+        /// <param name="title">
+        /// Title of field<para/>
+        /// Shown as a bold heading above the value text. It cannot contain
+        /// markup and will be escaped for you.
+        /// </param>
+        /// <param name="value">
+        /// Value of field (may contain formatting if enabled)<para/>
+        /// The text value of the field. It may contain standard message markup
+        /// and must be escaped as normal. May be multi-line.
+        /// </param>
+        /// <param name="isShort">Whether field can be shown side-by-side with other fields (optional)</param>
+        /// <param name="enableFormatting">Whether or not to enable formatting for value</param>
+        /// <returns></returns>
+        ISlackAttachmentBuilder WithField(string title, string value, bool isShort = false,
+            bool enableFormatting = true);
     }
 }

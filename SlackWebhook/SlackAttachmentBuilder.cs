@@ -167,6 +167,47 @@ namespace SlackWebhook
             return this;
         }
 
+        public ISlackAttachmentBuilder WithField(string title, string value, bool isShort = false, bool enableFormatting = true)
+        {
+            if (string.IsNullOrEmpty(title))
+                throw new ArgumentException("Must be non-empty", nameof(title));
+
+            if (string.IsNullOrEmpty(value))
+                throw new ArgumentException("Must be non-empty", nameof(value));
+
+            if (_template.Fields != null)
+            {
+                var fieldsFormattingEnabled = _template.EnableFormatting.Contains(SlackAttachment.FormattingFields);
+                if (enableFormatting && !fieldsFormattingEnabled)
+                {
+                    throw new ArgumentException(
+                        "Canont add field with formatting, after field without formatting has been added",
+                        nameof(enableFormatting));
+                }
+                if (!enableFormatting && fieldsFormattingEnabled)
+                {
+                    throw new ArgumentException(
+                        "Canont add field without formatting, after field with formatting has been added",
+                        nameof(enableFormatting));
+                }
+            }
+            else
+            {
+                _template.Fields = new List<SlackAttachmentField>();
+            }
+
+            _template.Fields.Add(new SlackAttachmentField
+            {
+                Title = title,
+                Value = enableFormatting ? Encoder.Encode(value) : value,
+                Short = isShort
+            });
+
+            SetEnableFormatting(SlackAttachment.FormattingFields, enableFormatting);
+
+            return this;
+        }
+
         /// <summary>
         /// Enables or disables formatting by adding/removing <paramref name="formattingType"/> from
         /// <see cref="SlackAttachment.EnableFormatting"/>

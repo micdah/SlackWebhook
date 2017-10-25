@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
 using SlackWebhook.Messages;
 using Xunit;
 
@@ -266,6 +267,69 @@ namespace SlackWebhook.Tests
         {
             Assert.Throws<ArgumentException>(() => Build(b => b.WithTimestamp(-1)));
             Assert.Throws<ArgumentException>(() => Build(b => b.WithTimestamp(new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.FromHours(0)).AddSeconds(-1))));
+        }
+
+        [Fact]
+        public void Should_Add_Field_Without_Formatting()
+        {
+            var att = Build(b => b.WithField("title", "foo & bar", true, false));
+            Assert.NotEmpty(att.Fields);
+
+            var field = att.Fields.Single();
+            Assert.Equal("title", field.Title);
+            Assert.Equal("foo & bar", field.Value);
+            Assert.True(field.Short);
+
+            Assert.DoesNotContain(att.EnableFormatting, x => x == SlackAttachment.FormattingFields);
+        }
+
+        [Fact]
+        public void Should_Add_Field_With_Formatting()
+        {
+            var att = Build(b => b.WithField("title", "foo & bar", true));
+            Assert.NotEmpty(att.Fields);
+
+            var field = att.Fields.Single();
+            Assert.Equal("title", field.Title);
+            Assert.Equal("foo &amp; bar", field.Value);
+            Assert.True(field.Short);
+
+            Assert.Contains(att.EnableFormatting, x => x == SlackAttachment.FormattingFields);
+        }
+
+        [Fact]
+        public void Should_Require_Field_Title_And_Value()
+        {
+            Assert.Throws<ArgumentException>(() => Build(b => b.WithField("", "value")));
+            Assert.Throws<ArgumentException>(() => Build(b => b.WithField("title", "")));
+        }
+
+        [Fact]
+        public void Cannot_Add_Formatted_Field_After_Unformatted()
+        {
+            Assert.Throws<ArgumentException>(() => Build(b => b
+                .WithField("title", "value", enableFormatting: false)
+                .WithField("title", "value")));
+        }
+
+        [Fact]
+        public void Cannot_Add_Unformatted_Field_After_Formatted()
+        {
+            Assert.Throws<ArgumentException>(() => Build(b => b
+                .WithField("title", "value", enableFormatting: false)
+                .WithField("title", "value")));
+        }
+
+        [Fact]
+        public void Should_Add_Multiple_Fields()
+        {
+            var att = Build(b => b
+                .WithField("field-1", "value")
+                .WithField("field-2", "value"));
+
+            Assert.Equal(2, att.Fields.Count);
+            Assert.Equal("field-1", att.Fields[0].Title);
+            Assert.Equal("field-2", att.Fields[1].Title);
         }
 
         private SlackAttachment Build(Action<ISlackAttachmentBuilder> configureBuilder = null)

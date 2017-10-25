@@ -194,6 +194,80 @@ namespace SlackWebhook.Tests
             Assert.Throws<ArgumentException>(() => Build(b => b.WithAuthor("author", iconUrl:"")));
         }
 
+        [Fact]
+        public void Should_Set_Image()
+        {
+            var att = Build(b => b.WithImage("image-url"));
+            Assert.Equal("image-url", att.ImageUrl);
+        }
+
+        [Fact]
+        public void Should_Require_Image_To_Be_NonEmpty()
+        {
+            Assert.Throws<ArgumentException>(() => Build(b => b.WithImage("")));
+        }
+
+        [Fact]
+        public void Should_Set_Thumbnail()
+        {
+            var att = Build(b => b.WithThumbnail("thumbnail-url"));
+            Assert.Equal("thumbnail-url", att.ThumbnailUrl);
+        }
+
+        [Fact]
+        public void Should_Require_Thumbnail_To_Be_NonEmpty()
+        {
+            Assert.Throws<ArgumentException>(() => Build(b => b.WithThumbnail("")));
+        }
+
+        [Fact]
+        public void Should_Set_Footer()
+        {
+            var att = Build(b => b.WithFooter("footer"));
+            Assert.Equal("footer", att.Footer);
+        }
+
+        [Fact]
+        public void Should_Set_Footer_And_Icon()
+        {
+            var att = Build(b => b.WithFooter("footer", "icon-url"));
+            Assert.Equal("footer", att.Footer);
+            Assert.Equal("icon-url", att.FooterIcon);
+        }
+
+        [Fact]
+        public void Should_Require_Footer()
+        {
+            Assert.Throws<ArgumentException>(() => Build(b => b.WithFooter("")));
+        }
+
+        [Fact]
+        public void Should_Require_Footer_Icon_NotEmpty()
+        {
+            Assert.Throws<ArgumentException>(() => Build(b => b.WithFooter("footer", "")));
+        }
+
+        [Fact]
+        public void Should_Set_Timestamp_From_DateTimeOffset()
+        {
+            var att = Build(b => b.WithTimestamp(new DateTimeOffset(1970, 1, 1, 5, 0, 0, TimeSpan.FromHours(2))));
+            Assert.Equal(60 * 60 * 3, att.Timestamp);
+        }
+
+        [Fact]
+        public void Should_Set_Timestamp_From_Int()
+        {
+            var att = Build(b => b.WithTimestamp(100));
+            Assert.Equal(100, att.Timestamp);
+        }
+
+        [Fact]
+        public void Should_Require_Timestamp_To_Be_After_Epoch()
+        {
+            Assert.Throws<ArgumentException>(() => Build(b => b.WithTimestamp(-1)));
+            Assert.Throws<ArgumentException>(() => Build(b => b.WithTimestamp(new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.FromHours(0)).AddSeconds(-1))));
+        }
+
         private SlackAttachment Build(Action<ISlackAttachmentBuilder> configureBuilder = null)
         {
             var builder = new SlackAttachmentBuilder();

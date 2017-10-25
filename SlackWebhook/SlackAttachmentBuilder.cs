@@ -113,6 +113,60 @@ namespace SlackWebhook
             return this;
         }
 
+        public ISlackAttachmentBuilder WithImage(string url)
+        {
+            if (string.IsNullOrEmpty(url))
+                throw new ArgumentException("Must be non-empty", nameof(url));
+
+            _template.ImageUrl = url;
+
+            return this;
+        }
+
+        public ISlackAttachmentBuilder WithThumbnail(string url)
+        {
+            if (string.IsNullOrEmpty(url))
+                throw new ArgumentException("Must be non-empty", nameof(url));
+
+            _template.ThumbnailUrl = url;
+
+            return this;
+        }
+
+        public ISlackAttachmentBuilder WithFooter(string text, string iconUrl = null)
+        {
+            if (string.IsNullOrEmpty(text))
+                throw new ArgumentException("Must be non-empty", nameof(text));
+
+            if (iconUrl == string.Empty)
+                throw new ArgumentException("Must not be empty", nameof(iconUrl));
+
+            _template.Footer = text;
+            _template.FooterIcon = iconUrl;
+
+            return this;
+        }
+
+        public ISlackAttachmentBuilder WithTimestamp(DateTimeOffset timestamp)
+        {
+            if (timestamp < SlackAttachment.EpochStart)
+                throw new ArgumentException("Must be after epoch start date", nameof(timestamp));
+
+            _template.SetTimestamp(timestamp);
+
+            return this;
+        }
+
+        public ISlackAttachmentBuilder WithTimestamp(int epochTime)
+        {
+            if (epochTime < 0)
+                throw new ArgumentException("Must be non-negative", nameof(epochTime));
+
+            _template.Timestamp = epochTime;
+
+            return this;
+        }
+
         /// <summary>
         /// Enables or disables formatting by adding/removing <paramref name="formattingType"/> from
         /// <see cref="SlackAttachment.EnableFormatting"/>

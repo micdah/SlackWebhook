@@ -1,10 +1,10 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using SlackWebhook.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using SlackWebhook.Exceptions;
 
 namespace SlackWebhook.Messages
 {
@@ -14,7 +14,7 @@ namespace SlackWebhook.Messages
     /// </summary>
     public class SlackAttachment
     {
-        private static readonly DateTimeOffset EpochStart = new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.FromHours(0));
+        internal static readonly DateTimeOffset EpochStart = new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.FromHours(0));
 
         /// <summary>
         /// Used to enable formatting of the <see cref="Text"/> field

@@ -2,6 +2,8 @@
 using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
+using SlackWebhook.Enums;
+using SlackWebhook.Messages;
 using Xunit;
 
 namespace SlackWebhook.Tests
@@ -20,6 +22,7 @@ namespace SlackWebhook.Tests
             await new SlackClient(webhookUrl).SendAsync(b => b
                 .WithText("Hello from *SlackWebhook*")
                 .WithUsername("SlackWebhook")
+                .WithIcon(IconType.Url, "https://raw.githubusercontent.com/micdah/SlackWebhook/master/icon.png")
                 .WithAttachment(a => a
                     .WithTitle("How to install")
                     .WithText("`PM> Install-Package SlackWebhook`")
@@ -27,7 +30,22 @@ namespace SlackWebhook.Tests
                 .WithAttachment(a => a
                     .WithTitle("Find out more")
                     .WithText("Find out more by taking a look at github.com/micdah/SlackWebhook")
-                    .WithLink("https://github.com/micdah/SlackWebhook")));
+                    .WithLink("https://github.com/micdah/SlackWebhook")
+                    .WithField(
+                        "Use builder pattern",
+                        "```\n" +
+                        "await slackClient.SendASync(b => b\n" +
+                        "   .WithUsername(\"My Bot\")\n" +
+                        "   .WithText(\"Hello *World*\"));\n" +
+                        "```")
+                    .WithField(
+                        "Use object initializer",
+                        "```\n" +
+                        "await slackClient.SendAsync(new SlackMessage {\n" +
+                        "   Username = \"My Bot\",\n" +
+                        "   Text = \"Hello *World*\"\n" +
+                        "});\n" +
+                        "```")));
         }
 
         private static async Task<string> GetWebhookUrlAsync()

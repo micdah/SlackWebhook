@@ -1,9 +1,8 @@
-﻿using System;
+﻿using SlackWebhook.Enums;
+using System;
 using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
-using SlackWebhook.Enums;
-using SlackWebhook.Messages;
 using Xunit;
 
 namespace SlackWebhook.Tests
@@ -46,6 +45,12 @@ namespace SlackWebhook.Tests
                         "   Text = \"Hello *World*\"\n" +
                         "});\n" +
                         "```")));
+
+            await new SlackClient(webhookUrl).SendAsync(b => b
+                .WithUsername("Slack Bot Name")
+                .WithIcon(IconType.Url, "http://my.host/bot_icon.png")
+                .WithText("Something very interesting just happened")
+            );
         }
 
         private static async Task<string> GetWebhookUrlAsync()

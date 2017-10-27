@@ -1,10 +1,9 @@
-﻿using System;
+﻿using SlackWebhook.Core;
+using SlackWebhook.Enums;
+using SlackWebhook.Messages;
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using SlackWebhook.Core;
-using SlackWebhook.Enums;
-using SlackWebhook.Exceptions;
-using SlackWebhook.Messages;
 
 [assembly: InternalsVisibleTo("SlackWebhook.Tests")]
 
@@ -22,12 +21,7 @@ namespace SlackWebhook
 
         public SlackMessage Build()
         {
-            ICollection<ValidationError> errors = null;
-            if (!_template.Validate(ref errors))
-            {
-                throw new SlackMessageValidationException("Validation failed", errors);
-            }
-
+            _template.ThrowIfInvalid();
             return new SlackMessage(_template);
         }
 

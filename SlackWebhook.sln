@@ -1,16 +1,18 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlackWebhook", "SlackWebhook\SlackWebhook.csproj", "{2EAC0F5E-5BC9-4917-933B-8BB4D83A7E4F}"
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2005
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SlackWebhook", "SlackWebhook\SlackWebhook.csproj", "{2EAC0F5E-5BC9-4917-933B-8BB4D83A7E4F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution items", "{DE6E5556-B473-4FFB-9D32-9EACCF96C606}"
 	ProjectSection(SolutionItems) = preProject
-		appveyor.yml = appveyor.yml
 		.gitignore = .gitignore
+		appveyor.yml = appveyor.yml
+		icon.png = icon.png
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlackWebhook.Tests", "SlackWebhook.Tests\SlackWebhook.Tests.csproj", "{1AF2CF65-0014-4E0A-BFD5-E67D683C0858}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SlackWebhook.Tests", "SlackWebhook.Tests\SlackWebhook.Tests.csproj", "{1AF2CF65-0014-4E0A-BFD5-E67D683C0858}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,5 +28,11 @@ Global
 		{1AF2CF65-0014-4E0A-BFD5-E67D683C0858}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1AF2CF65-0014-4E0A-BFD5-E67D683C0858}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1AF2CF65-0014-4E0A-BFD5-E67D683C0858}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2FB1FDB5-97E7-49DD-924E-FD384F6E7A7C}
 	EndGlobalSection
 EndGlobal

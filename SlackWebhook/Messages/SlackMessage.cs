@@ -125,5 +125,19 @@ namespace SlackWebhook.Messages
 
             return !validationErrors.Any();
         }
+
+        /// <summary>
+        /// Checks the current state using <see cref="Validate"/> and throws a 
+        /// <see cref="SlackMessageValidationException"/> with all validations erros, if any 
+        /// are found.
+        /// </summary>
+        internal void ThrowIfInvalid()
+        {
+            ICollection<ValidationError> errors = new List<ValidationError>();
+            if (!Validate(ref errors))
+            {
+                throw new SlackMessageValidationException("Validation failed", errors);
+            }
+        }
     }
 }

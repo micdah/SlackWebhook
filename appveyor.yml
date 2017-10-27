@@ -26,3 +26,7 @@ test:
   assemblies:
     only:
       - SlackWebhook.Tests.dll
+
+environment:
+    WEBHOOKURL:
+        secure: WQ4bNAn467AcM9hTAYXxLu4WFvm+9/YoxZAR52vbTcxVYVLKH8fToxBlTyvV8ZQZu1070iCID2q7FjHBPtUGGjZNyl3APvKqIliDe+fYTSw=

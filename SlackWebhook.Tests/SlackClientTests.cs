@@ -45,12 +45,6 @@ namespace SlackWebhook.Tests
                         "   Text = \"Hello *World*\"\n" +
                         "});\n" +
                         "```")));
-
-            await new SlackClient(webhookUrl).SendAsync(b => b
-                .WithUsername("Slack Bot Name")
-                .WithIcon(IconType.Url, "http://my.host/bot_icon.png")
-                .WithText("Something very interesting just happened")
-            );
         }
 
         private static async Task<string> GetWebhookUrlAsync()

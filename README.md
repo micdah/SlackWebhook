@@ -1,5 +1,6 @@
 # SlackWebhook
 [![Build status](https://ci.appveyor.com/api/projects/status/xg5n46bdf223dj2b/branch/master?svg=true)](https://ci.appveyor.com/project/MichaelDahl/slackwebhook/branch/master)
+[![NuGet](https://img.shields.io/nuget/v/SlackWebhook.svg)](https://www.nuget.org/packages/SlackWebhook/)
 
 Provides a simple .Net client for using Slack's [Incoming Webhooks](https://api.slack.com/incoming-webhooks) URL's to send messages to a slack channel of your choosing.
 

@@ -30,3 +30,10 @@ test:
 environment:
     WEBHOOKURL:
         secure: WQ4bNAn467AcM9hTAYXxLu4WFvm+9/YoxZAR52vbTcxVYVLKH8fToxBlTyvV8ZQZu1070iCID2q7FjHBPtUGGjZNyl3APvKqIliDe+fYTSw=
+
+deploy:
+  provider: NuGet
+  api_key:
+    secure: vBlSrCQ4s/mllI3OlT4VDnQapsDxgaJoLvZ7jn+9R1oPId9QUH8t1QSkUN+zIH5K
+  skip_symbols: false
+  artifact: /.*\.nupkg/

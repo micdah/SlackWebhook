@@ -74,3 +74,13 @@ await new SlackClient(webhookUrl).SendAsync(b => b
             "});\n" +
             "```")));
 ```
+
+
+## Documentation
+
+You can find the documentation in [SlackWebhook.md](https://github.com/micdah/SlackWebhook/blob/master/SlackWebhook.md), of particular 
+interest are these:
+
+- [`ISlackClient`](https://github.com/micdah/SlackWebhook/blob/master/SlackWebhook.md#T-SlackWebhook-ISlackClient): Interface of the `SlackClient` implementation used to send message
+- [`ISlackMessageBuilder`](https://github.com/micdah/SlackWebhook/blob/master/SlackWebhook.md#T-SlackWebhook-ISlackMessageBuilder): Inteface of the message builder used to configure your message
+- [`ISlackAttachmentBuilder`](https://github.com/micdah/SlackWebhook/blob/master/SlackWebhook.md#T-SlackWebhook-ISlackAttachmentBuilder): Interface of the attachment builder used to configure attachments added to your message

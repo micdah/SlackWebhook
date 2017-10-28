@@ -16,8 +16,14 @@
     <Copyright>Copyright 2017 (c) Michael Dahl. All Rights reserved.</Copyright>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\SlackWebhook.xml</DocumentationFile>
+    <DocumentationMarkdown>..\SlackWebhook.md</DocumentationMarkdown>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <PackageReference Include="Vsxmd" Version="1.2.0" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Messages\" />

@@ -1,8 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>Latest</LangVersion>
+    <LangVersion>7.2</LangVersion>
     <OutputType>Library</OutputType>
     <PackageId>SlackWebhook</PackageId>
     <PackageVersion>1.0.0</PackageVersion>
@@ -15,20 +14,17 @@
     <PackageTags>slack webhook client</PackageTags>
     <Copyright>Copyright 2017 (c) Michael Dahl. All Rights reserved.</Copyright>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\netstandard2.0\SlackWebhook.xml</DocumentationFile>
     <DocumentationMarkdown>..\SlackWebhook.md</DocumentationMarkdown>
   </PropertyGroup>
-
   <ItemGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <PackageReference Include="Vsxmd" Version="1.2.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+    <!-- <PackageReference Include="Vsxmd" Version="1.2.0" /> -->
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Messages\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
   </ItemGroup>
 </Project>

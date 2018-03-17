@@ -26,6 +26,7 @@
 - [ISlackMessageBuilder](#T-SlackWebhook-ISlackMessageBuilder 'SlackWebhook.ISlackMessageBuilder')
   - [Build()](#M-SlackWebhook-ISlackMessageBuilder-Build 'SlackWebhook.ISlackMessageBuilder.Build')
   - [WithAttachment(configureAttachment)](#M-SlackWebhook-ISlackMessageBuilder-WithAttachment-System-Action{SlackWebhook-ISlackAttachmentBuilder}- 'SlackWebhook.ISlackMessageBuilder.WithAttachment(System.Action{SlackWebhook.ISlackAttachmentBuilder})')
+  - [WithChannel(channel)](#M-SlackWebhook-ISlackMessageBuilder-WithChannel-System-String- 'SlackWebhook.ISlackMessageBuilder.WithChannel(System.String)')
   - [WithIcon(iconType,urlOrEmoji)](#M-SlackWebhook-ISlackMessageBuilder-WithIcon-SlackWebhook-Enums-IconType,System-String- 'SlackWebhook.ISlackMessageBuilder.WithIcon(SlackWebhook.Enums.IconType,System.String)')
   - [WithText(text,enableFormatting)](#M-SlackWebhook-ISlackMessageBuilder-WithText-System-String,System-Boolean- 'SlackWebhook.ISlackMessageBuilder.WithText(System.String,System.Boolean)')
   - [WithUsername(username)](#M-SlackWebhook-ISlackMessageBuilder-WithUsername-System-String- 'SlackWebhook.ISlackMessageBuilder.WithUsername(System.String)')
@@ -61,6 +62,7 @@
   - [Validate(validationErrors)](#M-SlackWebhook-Messages-SlackAttachmentField-Validate-System-Collections-Generic-ICollection{SlackWebhook-Exceptions-ValidationError}@- 'SlackWebhook.Messages.SlackAttachmentField.Validate(System.Collections.Generic.ICollection{SlackWebhook.Exceptions.ValidationError}@)')
 - [SlackMessage](#T-SlackWebhook-Messages-SlackMessage 'SlackWebhook.Messages.SlackMessage')
   - [Attachments](#P-SlackWebhook-Messages-SlackMessage-Attachments 'SlackWebhook.Messages.SlackMessage.Attachments')
+  - [Channel](#P-SlackWebhook-Messages-SlackMessage-Channel 'SlackWebhook.Messages.SlackMessage.Channel')
   - [EnableFormatting](#P-SlackWebhook-Messages-SlackMessage-EnableFormatting 'SlackWebhook.Messages.SlackMessage.EnableFormatting')
   - [IconEmoji](#P-SlackWebhook-Messages-SlackMessage-IconEmoji 'SlackWebhook.Messages.SlackMessage.IconEmoji')
   - [IconUrl](#P-SlackWebhook-Messages-SlackMessage-IconUrl 'SlackWebhook.Messages.SlackMessage.IconUrl')
@@ -552,6 +554,23 @@ With attachment build with provided attachment builder
 
 Adds a new [SlackAttachment](#T-SlackWebhook-Messages-SlackAttachment 'SlackWebhook.Messages.SlackAttachment') to [Attachments](#P-SlackWebhook-Messages-SlackMessage-Attachments 'SlackWebhook.Messages.SlackMessage.Attachments') built using provided [ISlackAttachmentBuilder](#T-SlackWebhook-ISlackAttachmentBuilder 'SlackWebhook.ISlackAttachmentBuilder')
 
+<a name='M-SlackWebhook-ISlackMessageBuilder-WithChannel-System-String-'></a>
+### WithChannel(channel) `method` [#](#M-SlackWebhook-ISlackMessageBuilder-WithChannel-System-String- 'Go To Here') [=](#contents 'Back To Contents')
+
+##### Summary
+
+With channel
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| channel | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The channel. |
+
+##### Remarks
+
+Sets the [Channel](#P-SlackWebhook-Messages-SlackMessage-Channel 'SlackWebhook.Messages.SlackMessage.Channel') property
+
 <a name='M-SlackWebhook-ISlackMessageBuilder-WithIcon-SlackWebhook-Enums-IconType,System-String-'></a>
 ### WithIcon(iconType,urlOrEmoji) `method` [#](#M-SlackWebhook-ISlackMessageBuilder-WithIcon-SlackWebhook-Enums-IconType,System-String- 'Go To Here') [=](#contents 'Back To Contents')
 
@@ -979,6 +998,13 @@ Basis for a Slack message which can be sent to the webhook URL
 ##### Summary
 
 Attachments to show below message (optional)
+
+<a name='P-SlackWebhook-Messages-SlackMessage-Channel'></a>
+### Channel `property` [#](#P-SlackWebhook-Messages-SlackMessage-Channel 'Go To Here') [=](#contents 'Back To Contents')
+
+##### Summary
+
+Channel the message is posted into (optional)
 
 <a name='P-SlackWebhook-Messages-SlackMessage-EnableFormatting'></a>
 ### EnableFormatting `property` [#](#P-SlackWebhook-Messages-SlackMessage-EnableFormatting 'Go To Here') [=](#contents 'Back To Contents')

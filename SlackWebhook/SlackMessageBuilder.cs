@@ -36,6 +36,14 @@ namespace SlackWebhook
             return this;
         }
 
+        public ISlackMessageBuilder WithChannel(string channel)
+        {
+            if (!string.IsNullOrEmpty(channel))
+                _template.Channel = channel;
+
+            return this;
+        }
+
         public ISlackMessageBuilder WithUsername(string username)
         {
             if (string.IsNullOrEmpty(username))

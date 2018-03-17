@@ -16,6 +16,7 @@ namespace SlackWebhook.Messages
 
         internal SlackMessage(SlackMessage source)
         {
+            Channel = source.Channel;
             Text = source.Text;
             Username = source.Username;
             IconUrl = source.IconUrl;
@@ -25,6 +26,12 @@ namespace SlackWebhook.Messages
                 .Select(a => new SlackAttachment(a))
                 .ToList();
         }
+
+        /// <summary>
+        /// Channel the message is posted into (optional)
+        /// </summary>
+        [JsonProperty("channel")]
+        public string Channel { get; set; }
 
         /// <summary>
         /// Message text which may contain formatting (unless 

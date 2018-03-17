@@ -60,6 +60,13 @@ namespace SlackWebhook.Tests
         }
 
         [Fact]
+        public void Should_Set_Channel()
+        {
+            var msg = _builder.WithChannel("channel").Build();
+            Assert.Equal("channel", msg.Channel);
+        }
+
+        [Fact]
         public void Should_Set_Username()
         {
             var msg = _builder.WithUsername("username").Build();

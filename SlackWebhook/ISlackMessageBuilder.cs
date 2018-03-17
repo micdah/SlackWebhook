@@ -55,6 +55,15 @@ namespace SlackWebhook
         ISlackMessageBuilder WithIcon(IconType iconType, string urlOrEmoji);
 
         /// <summary>
+        /// With channel
+        /// </summary>
+        /// <param name="channel">The channel.</param>
+        /// <remarks>
+        /// Sets the <see cref="SlackMessage.Channel"/> property
+        /// </remarks>
+        ISlackMessageBuilder WithChannel(string channel);
+
+        /// <summary>
         /// With attachment build with provided attachment builder
         /// </summary>
         /// <remarks>

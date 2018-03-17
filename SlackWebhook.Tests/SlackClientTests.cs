@@ -47,6 +47,19 @@ namespace SlackWebhook.Tests
                         "```")));
         }
 
+        [Fact]
+        public async Task Test_Sending_To_Other_Channel()
+        {
+            var webhookUrl = await GetWebhookUrlAsync();
+            Assert.NotNull(webhookUrl);
+
+            await new SlackClient(webhookUrl).SendAsync(b => b
+                .WithText("Testing sending to different channel, than the one configured by the webhook URL")
+                .WithUsername("SlackWebhook")
+                .WithIcon(IconType.Url, "https://raw.githubusercontent.com/micdah/SlackWebhook/master/icon.png")
+                .WithChannel("#other-test"));
+        }
+
         private static async Task<string> GetWebhookUrlAsync()
         {
             var file = GetFilePath(WebhookFileName);

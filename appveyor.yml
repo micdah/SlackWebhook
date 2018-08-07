@@ -8,6 +8,18 @@ image: Visual Studio 2017
 version: 1.0.{build}
 configuration: Release
 
+init:
+# Update version based on tag or commit hash
+- ps: >-
+    if ($env:APPVEYOR_REPO_TAG -eq "true")
+    {
+      Update-AppveyorBuild -Version "$($env:APPVEYOR_REPO_TAG_NAME.TrimStart("v"))"
+    }
+    else
+    {
+      Update-AppveyorBuild -Version "0.0.1-dev-$($env:APPVEYOR_REPO_COMMIT.substring(0,7))"
+    }
+
 dotnet_csproj:
   patch: true
   file: '**\*.csproj'
@@ -32,10 +44,21 @@ environment:
         secure: WQ4bNAn467AcM9hTAYXxLu4WFvm+9/YoxZAR52vbTcxVYVLKH8fToxBlTyvV8ZQZu1070iCID2q7FjHBPtUGGjZNyl3APvKqIliDe+fYTSw=
 
 deploy:
-  provider: NuGet
+- provider: NuGet
   api_key:
     secure: vBlSrCQ4s/mllI3OlT4VDnQapsDxgaJoLvZ7jn+9R1oPId9QUH8t1QSkUN+zIH5K
   skip_symbols: true
   artifact: /.*\.nupkg/
   on:
-    branch: master
+    APPVEYOR_REPO_TAG: true
+- provider: GitHub
+  auth_token:
+    secure: WTGOhyUBnlt3MpWqwOmbrFmqzhAwSPh8QDSKLPajo3xToZ4EgH1DTOacSE0SbWwp
+  release: $(APPVEYOR_REPO_TAG_NAME)
+  description: 'See [Changelog](CHANGELOG.md) for changes'
+  draft: false
+  prerelease: false
+  force_update: true
+  artifact: /.*\.nupkg/
+  on:
+    APPVEYOR_REPO_TAG: true

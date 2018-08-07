@@ -6,6 +6,8 @@ Provides a simple .Net client for using Slack's [Incoming Webhooks](https://api.
 
 The Webhooks API is pretty simple, but it always preferable to have a typed interface to use rather than an untyped (_and undocumented_) JSON object. So using this library should make it simpler to build a slack message and send it using a webhook URL.
 
+See [changelog](CHANGELOG.md) for version history.
+
 ## Example
 
 ![Foo](https://raw.githubusercontent.com/micdah/SlackWebhook/master/demo.png)

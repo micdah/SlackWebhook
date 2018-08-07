@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution items", "Solution 
 		appveyor.yml = appveyor.yml
 		icon.png = icon.png
 		README.md = README.md
+		CHANGELOG.md = CHANGELOG.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SlackWebhook.Tests", "SlackWebhook.Tests\SlackWebhook.Tests.csproj", "{1AF2CF65-0014-4E0A-BFD5-E67D683C0858}"

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
+using SlackWebhook.Core;
 using SlackWebhook.Exceptions;
 
 namespace SlackWebhook.Messages
@@ -8,25 +9,8 @@ namespace SlackWebhook.Messages
     /// <summary>
     /// Basis for a Slack message which can be sent to the webhook URL
     /// </summary>
-    public class SlackMessage
+    public class SlackMessage : ICloneable<SlackMessage>, IValidateable
     {
-        public SlackMessage()
-        {
-        }
-
-        internal SlackMessage(SlackMessage source)
-        {
-            Channel = source.Channel;
-            Text = source.Text;
-            Username = source.Username;
-            IconUrl = source.IconUrl;
-            IconEmoji = source.IconEmoji;
-            EnableFormatting = source.EnableFormatting;
-            Attachments = source.Attachments?
-                .Select(a => new SlackAttachment(a))
-                .ToList();
-        }
-
         /// <summary>
         /// Channel the message is posted into (optional)
         /// </summary>
@@ -88,11 +72,24 @@ namespace SlackWebhook.Messages
         [JsonProperty("attachments")]
         public List<SlackAttachment> Attachments { get; set; }
 
-        /// <summary>
-        /// Validates the current state of the message (including any nested 
-        /// elements, such as <see cref="Attachments"/>)
-        /// </summary>
-        /// <returns>True if message is valid, false otherwise</returns>
+        /// <inheritdoc />
+        public SlackMessage Clone()
+        {
+            return new SlackMessage
+            {
+                Channel = Channel,
+                Text = Text,
+                Username = Username,
+                IconUrl = IconUrl,
+                IconEmoji = IconEmoji,
+                EnableFormatting = EnableFormatting,
+                Attachments = Attachments?
+                    .Select(a => a.Clone())
+                    .ToList()
+            };
+        }
+
+        /// <inheritdoc />
         public bool Validate(ref ICollection<ValidationError> validationErrors)
         {
             if (validationErrors == null)

@@ -22,7 +22,7 @@ namespace SlackWebhook
         public SlackMessage Build()
         {
             _template.ThrowIfInvalid();
-            return new SlackMessage(_template);
+            return _template.Clone();
         }
 
         public ISlackMessageBuilder WithText(string text, bool enableFormatting = true)

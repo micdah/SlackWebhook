@@ -20,7 +20,7 @@ namespace SlackWebhook
 
         public SlackAttachment Build()
         {
-            return new SlackAttachment(_template);
+            return _template.Clone();
         }
 
         public ISlackAttachmentBuilder WithTitle(string title)

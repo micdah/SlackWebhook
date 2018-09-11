@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using SlackWebhook.Core;
 
 namespace SlackWebhook.Messages
 {
@@ -11,9 +12,10 @@ namespace SlackWebhook.Messages
     /// Optional attachment to a <see cref="SlackMessage"/>.<para/>
     /// See https://api.slack.com/docs/message-attachments for more details
     /// </summary>
-    public class SlackAttachment
+    public class SlackAttachment : ICloneable<SlackAttachment>, IValidateable
     {
-        internal static readonly DateTimeOffset EpochStart = new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.FromHours(0));
+        internal static readonly DateTimeOffset EpochStart =
+            new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.FromHours(0));
 
         /// <summary>
         /// Used to enable formatting of the <see cref="Text"/> field
@@ -29,32 +31,6 @@ namespace SlackWebhook.Messages
         /// Used to enable formatting of the <see cref="Fields"/> value fields
         /// </summary>
         public const string FormattingFields = "fields";
-
-        public SlackAttachment()
-        {
-        }
-
-        internal SlackAttachment(SlackAttachment source)
-        {
-            Title = source.Title;
-            TitleLink = source.TitleLink;
-            Text = source.Text;
-            PreText = source.PreText;
-            Fallback = source.Fallback;
-            Color = source.Color;
-            AuthorName = source.AuthorName;
-            AuthorLink = source.AuthorLink;
-            AuthorIcon = source.AuthorIcon;
-            ImageUrl = source.ImageUrl;
-            ThumbnailUrl = source.ThumbnailUrl;
-            Footer = source.Footer;
-            FooterIcon = source.FooterIcon;
-            Timestamp = source.Timestamp;
-            Fields = source.Fields?
-                .Select(f => new SlackAttachmentField(f))
-                .ToList();
-            EnableFormatting = source.EnableFormatting?.ToList();
-        }
 
         /// <summary>
         /// Title of attachment (required)
@@ -249,6 +225,12 @@ namespace SlackWebhook.Messages
         public List<string> EnableFormatting { get; set; }
 
         /// <summary>
+        /// Actions shown at the bottom of the message (optional)
+        /// </summary>
+        [JsonProperty("actions")]
+        public List<SlackAttachmentAction> Actions { get; set; }
+
+        /// <summary>
         /// Set color hex code from <see cref="System.Drawing.Color"/>
         /// </summary>
         /// <param name="color">Color to set color hex from</param>
@@ -261,18 +243,42 @@ namespace SlackWebhook.Messages
         /// Set <see cref="Timestamp"/> epoch value based on provided date time
         /// </summary>
         /// <param name="timestamp">Timestamp to set epohc time from</param>
-        public void SetTimestamp(DateTimeOffset timestamp) 
+        public void SetTimestamp(DateTimeOffset timestamp)
         {
-            Timestamp = (int)(timestamp - EpochStart).TotalSeconds;
+            Timestamp = (int) (timestamp - EpochStart).TotalSeconds;
         }
 
-        /// <summary>
-        /// Validates the current state of the attachment (including any nested
-        /// elements, such as <see cref="Fields"/>)
-        /// </summary>
-        /// <param name="validationErrors"></param>
-        /// <returns>True if the attachment is valid, false otherwise</returns>
-        public bool Validate(ref ICollection<ValidationError> validationErrors) 
+        /// <inheritdoc />
+        public SlackAttachment Clone()
+        {
+            return new SlackAttachment
+            {
+                Title = Title,
+                TitleLink = TitleLink,
+                Text = Text,
+                PreText = PreText,
+                Fallback = Fallback,
+                Color = Color,
+                AuthorName = AuthorName,
+                AuthorLink = AuthorLink,
+                AuthorIcon = AuthorIcon,
+                ImageUrl = ImageUrl,
+                ThumbnailUrl = ThumbnailUrl,
+                Footer = Footer,
+                FooterIcon = FooterIcon,
+                Timestamp = Timestamp,
+                Fields = Fields?
+                    .Select(f => f.Clone())
+                    .ToList(),
+                EnableFormatting = EnableFormatting?.ToList(),
+                Actions = Actions?
+                    .Select(a => a.Clone())
+                    .ToList()
+            };
+        }
+
+        /// <inheritdoc />
+        public bool Validate(ref ICollection<ValidationError> validationErrors)
         {
             if (validationErrors == null)
             {
@@ -282,14 +288,14 @@ namespace SlackWebhook.Messages
             // Title is required
             if (string.IsNullOrEmpty(Title))
             {
-                validationErrors.Add(new ValidationError(nameof(SlackAttachment), nameof(Title), 
+                validationErrors.Add(new ValidationError(nameof(SlackAttachment), nameof(Title),
                     "Title is a required field"));
             }
 
             // Timestamp must be positive
             if (Timestamp.HasValue && Timestamp.Value < 0)
             {
-                validationErrors.Add(new ValidationError(nameof(SlackAttachment), nameof(Timestamp), 
+                validationErrors.Add(new ValidationError(nameof(SlackAttachment), nameof(Timestamp),
                     "Must be non-negative value"));
             }
 

@@ -2,25 +2,15 @@
 using SlackWebhook.Exceptions;
 using System.Collections.Generic;
 using System.Linq;
+using SlackWebhook.Core;
 
 namespace SlackWebhook.Messages
 {
     /// <summary>
     /// Optional attachment field added to <see cref="SlackAttachment.Fields"/>
     /// </summary>
-    public class SlackAttachmentField
+    public class SlackAttachmentField : ICloneable<SlackAttachmentField>, IValidateable
     {
-        public SlackAttachmentField()
-        {
-        }
-
-        public SlackAttachmentField(SlackAttachmentField source)
-        {
-            Title = source.Title;
-            Value = source.Value;
-            Short = source.Short;
-        }
-
         /// <summary>
         /// Title of field
         /// </summary>
@@ -48,11 +38,18 @@ namespace SlackWebhook.Messages
         [JsonProperty("short")]
         public bool Short { get; set; }
 
-        /// <summary>
-        /// Validates the current state of the attachment field
-        /// </summary>
-        /// <param name="validationErrors"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
+        public SlackAttachmentField Clone()
+        {
+            return new SlackAttachmentField
+            {
+                Title = Title,
+                Value = Value,
+                Short = Short
+            };
+        }
+
+        /// <inheritdoc />
         public bool Validate(ref ICollection<ValidationError> validationErrors)
         {
             if (validationErrors == null)

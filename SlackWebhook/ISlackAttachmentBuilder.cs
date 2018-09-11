@@ -219,8 +219,19 @@ namespace SlackWebhook
         /// </param>
         /// <param name="isShort">Whether field can be shown side-by-side with other fields (optional)</param>
         /// <param name="enableFormatting">Whether or not to enable formatting for value</param>
-        /// <returns></returns>
         ISlackAttachmentBuilder WithField(string title, string value, bool isShort = false,
             bool enableFormatting = true);
+
+        /// <summary>
+        /// With link button action, shown at the bottom of the attachment
+        /// </summary>
+        /// <remarks>
+        /// An attachment may contain multiple actions
+        /// </remarks>
+        /// <param name="text">Test shown on link button</param>
+        /// <param name="url">URL opened if link button is pressed</param>
+        /// <param name="style">Optional style, one of <see cref="SlackAttachmentLinkButtonAction.StylePrimary"/>
+        /// or <see cref="SlackAttachmentLinkButtonAction.StyleDanger"/></param>
+        ISlackAttachmentBuilder WithLinkButtonAction(string text, string url, string style = null);
     }
 }

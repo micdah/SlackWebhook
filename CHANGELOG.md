@@ -9,7 +9,7 @@
   
   Example:
     ```cs
-    await new client.SendAsync(b => b
+    await client.SendAsync(b => b
         .WithText("Look at my buttons")
         .WithAttachment(a => a
             .WithTitle("Now with actions")

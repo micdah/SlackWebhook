@@ -11,6 +11,10 @@ namespace SlackWebhook.Messages
     /// </summary>
     public abstract class SlackAttachmentAction : ICloneable<SlackAttachmentAction>, IValidateable
     {
+        /// <summary>
+        /// Initialize attachment action
+        /// </summary>
+        /// <param name="type">Type of action</param>
         protected SlackAttachmentAction(string type)
         {
             Type = type;

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text.RegularExpressions;
+using SlackWebhook.Enums;
 
 namespace SlackWebhook
 {
@@ -181,13 +182,13 @@ namespace SlackWebhook
                 if (enableFormatting && !fieldsFormattingEnabled)
                 {
                     throw new ArgumentException(
-                        "Canont add field with formatting, after field without formatting has been added",
+                        "Cannot add field with formatting, after field without formatting has been added",
                         nameof(enableFormatting));
                 }
                 if (!enableFormatting && fieldsFormattingEnabled)
                 {
                     throw new ArgumentException(
-                        "Canont add field without formatting, after field with formatting has been added",
+                        "Cannot add field without formatting, after field with formatting has been added",
                         nameof(enableFormatting));
                 }
             }
@@ -204,6 +205,32 @@ namespace SlackWebhook
             });
 
             SetEnableFormatting(SlackAttachment.FormattingFields, enableFormatting);
+
+            return this;
+        }
+
+        public ISlackAttachmentBuilder WithLinkButtonAction(string text, string url, ActionStyle? style = null)
+        {
+            if (string.IsNullOrEmpty(text))
+                throw new ArgumentException("Must be non-empty", nameof(text));
+
+            if (string.IsNullOrEmpty(url))
+                throw new ArgumentException("Must be non-empty", nameof(url));
+            
+            if (style.HasValue && !Enum.IsDefined(typeof(ActionStyle), style.Value))
+                throw new ArgumentOutOfRangeException(nameof(style), "Invalid style");
+
+            if (_template.Actions == null)
+            {
+                _template.Actions = new List<SlackAttachmentAction>();
+            }
+            
+            _template.Actions.Add(new SlackAttachmentLinkButtonAction
+            {
+                Text = text,
+                Url = url,
+                Style = style
+            });
 
             return this;
         }

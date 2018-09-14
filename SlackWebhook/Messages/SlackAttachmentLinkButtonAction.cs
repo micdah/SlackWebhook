@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using SlackWebhook.Core;
+using SlackWebhook.Enums;
 using SlackWebhook.Exceptions;
 
 namespace SlackWebhook.Messages
@@ -10,16 +13,6 @@ namespace SlackWebhook.Messages
     /// </summary>
     public class SlackAttachmentLinkButtonAction : SlackAttachmentAction
     {
-        /// <summary>
-        /// Turns the button green and indicates the best forward action to take
-        /// </summary>
-        public const string StylePrimary = "primary";
-
-        /// <summary>
-        /// Turns the button red and indicates it some kind of destructive action
-        /// </summary>
-        public const string StyleDanger = "danger";
-
         /// <summary>
         /// Create new empty link button action
         /// </summary>
@@ -34,18 +27,19 @@ namespace SlackWebhook.Messages
         public string Url { get; set; }
 
         /// <summary>
-        /// Optional style, may be one of <see cref="StylePrimary"/> or <see cref="StyleDanger"/>
+        /// Optional style
         /// </summary>
-        [JsonProperty("style")]
-        public string Style { get; set; }
-
+        [JsonProperty("style"), JsonConverter(typeof(ActionStyleJsonConverter))]
+        public ActionStyle? Style { get; set; }
+        
         /// <inheritdoc />
         public override SlackAttachmentAction Clone()
         {
             return new SlackAttachmentLinkButtonAction
             {
                 Text = Text,
-                Url = Url
+                Url = Url,
+                Style = Style
             };
         }
 
@@ -64,10 +58,10 @@ namespace SlackWebhook.Messages
             // Style must be one of pre-set values
             if (Style != null)
             {
-                if (Style != StylePrimary && Style != StyleDanger)
+                if (!Enum.IsDefined(typeof(ActionStyle), Style))
                 {
                     validationErrors.Add(new ValidationError(nameof(SlackAttachmentLinkButtonAction), nameof(Style),
-                        $"Style must be one of '{StylePrimary}' or '{StyleDanger}'"));
+                        "Unknown style"));
                 }
             }
 

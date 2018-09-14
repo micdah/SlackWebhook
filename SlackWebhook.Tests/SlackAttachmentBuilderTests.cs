@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
+using SlackWebhook.Enums;
 using SlackWebhook.Messages;
 using Xunit;
 
@@ -330,6 +331,28 @@ namespace SlackWebhook.Tests
             Assert.Equal(2, att.Fields.Count);
             Assert.Equal("field-1", att.Fields[0].Title);
             Assert.Equal("field-2", att.Fields[1].Title);
+        }
+
+        [Fact]
+        public void Should_Add_LinkButtonAction()
+        {
+            var att = Build(b => b
+                .WithLinkButtonAction("action", "url", ActionStyle.Primary));
+
+            Assert.Single(att.Actions);
+
+            var action = att.Actions[0] as SlackAttachmentLinkButtonAction;
+            Assert.NotNull(action);
+            Assert.Equal("action", action.Text);
+            Assert.Equal("url", action.Url);
+            Assert.Equal(ActionStyle.Primary, action.Style);
+        }
+
+        [Fact]
+        public void Should_Not_Allow_Setting_Invalid_Style()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => Build(b => b
+                .WithLinkButtonAction("action", "url", (ActionStyle) 255)));
         }
 
         private SlackAttachment Build(Action<ISlackAttachmentBuilder> configureBuilder = null)

@@ -44,7 +44,13 @@ namespace SlackWebhook.Tests
                         "   Username = \"My Bot\",\n" +
                         "   Text = \"Hello *World*\"\n" +
                         "});\n" +
-                        "```")));
+                        "```"))
+                .WithAttachment(a => a
+                    .WithTitle("Now with actions")
+                    .WithText("...which are pretty neat")
+                    .WithLinkButtonAction("Click me", "http://google.com", ActionStyle.Primary)
+                    .WithLinkButtonAction("Don't click me", "http://bing.com", ActionStyle.Danger))
+            );
         }
 
         [Fact]
@@ -76,7 +82,8 @@ namespace SlackWebhook.Tests
             var baseDirectory = AppContext.BaseDirectory;
             // added because of test run issues on MacOS
             var indexOfBin = baseDirectory.LastIndexOf("bin", StringComparison.OrdinalIgnoreCase);
-            var connectionStringFileDirectory = baseDirectory.Substring(0, (indexOfBin > 0) ? indexOfBin : baseDirectory.Length);
+            var connectionStringFileDirectory =
+                baseDirectory.Substring(0, (indexOfBin > 0) ? indexOfBin : baseDirectory.Length);
             return Path.Combine(connectionStringFileDirectory, filename);
         }
     }

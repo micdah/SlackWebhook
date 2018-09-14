@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using SlackWebhook.Enums;
 using SlackWebhook.Messages;
 
 namespace SlackWebhook
@@ -230,8 +231,7 @@ namespace SlackWebhook
         /// </remarks>
         /// <param name="text">Test shown on link button</param>
         /// <param name="url">URL opened if link button is pressed</param>
-        /// <param name="style">Optional style, one of <see cref="SlackAttachmentLinkButtonAction.StylePrimary"/>
-        /// or <see cref="SlackAttachmentLinkButtonAction.StyleDanger"/></param>
-        ISlackAttachmentBuilder WithLinkButtonAction(string text, string url, string style = null);
+        /// <param name="style">Optional style</param>
+        ISlackAttachmentBuilder WithLinkButtonAction(string text, string url, ActionStyle? style = null);
     }
 }

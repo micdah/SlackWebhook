@@ -9,7 +9,7 @@
     <Description>Client used to build and send Slack messages to a channel, using a slack incoming webhook which can easily configured</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>Initial release</PackageReleaseNotes>
-    <PackageProjectUrl>https://github.com/micdah/SlackWebhook</PackageProjectUrl>
+    <PackageProjectUrl>https://slackwebhook.micdah.dk/</PackageProjectUrl>
     <PackageIconUrl>https://github.com/micdah/SlackWebhook/raw/master/icon.png</PackageIconUrl>
     <PackageTags>slack webhook client</PackageTags>
     <Copyright>Copyright 2017 (c) Michael Dahl. All Rights reserved.</Copyright>

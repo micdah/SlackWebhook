@@ -1,12 +1,16 @@
 ﻿using Newtonsoft.Json;
 using SlackWebhook.Messages;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SlackWebhook
 {
+    /// <summary>
+    /// Slack client
+    /// </summary>
     public interface ISlackClient
     {
         /// <summary>
@@ -32,15 +36,18 @@ namespace SlackWebhook
         Task SendAsync(SlackMessage message);
     }
 
+    /// <inheritdoc />
     public class SlackClient : ISlackClient
     {
         private readonly string _webhookUrl;
 
+        /// <inheritdoc />
         public SlackClient(string webhookUrl)
         {
             _webhookUrl = webhookUrl ?? throw new ArgumentNullException(nameof(webhookUrl));
         }
 
+        /// <inheritdoc />
         public Task SendAsync(Action<ISlackMessageBuilder> configureBuilder)
         {
             if (configureBuilder == null) throw new ArgumentNullException(nameof(configureBuilder));
@@ -51,6 +58,7 @@ namespace SlackWebhook
             return SendAsync(message);
         }
 
+        /// <inheritdoc />
         public async Task SendAsync(SlackMessage message)
         {
             if (message == null) throw new ArgumentNullException(nameof(message));

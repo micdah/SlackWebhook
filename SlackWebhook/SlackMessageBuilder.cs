@@ -9,22 +9,28 @@ using System.Runtime.CompilerServices;
 
 namespace SlackWebhook
 {
+    /// <inheritdoc />
     public class SlackMessageBuilder : ISlackMessageBuilder
     {
         private static readonly FormattedTextEncoder Encoder = new FormattedTextEncoder();
         private readonly SlackMessage _template;
 
+        /// <summary>
+        /// Create new slack message builder
+        /// </summary>
         public SlackMessageBuilder()
         {
             _template = new SlackMessage();
         }
 
+        /// <inheritdoc />
         public SlackMessage Build()
         {
             _template.ThrowIfInvalid();
             return _template.Clone();
         }
 
+        /// <inheritdoc />
         public ISlackMessageBuilder WithText(string text, bool enableFormatting = true)
         {
             if (string.IsNullOrEmpty(text))
@@ -36,6 +42,7 @@ namespace SlackWebhook
             return this;
         }
 
+        /// <inheritdoc />
         public ISlackMessageBuilder WithChannel(string channel)
         {
             if (!string.IsNullOrEmpty(channel))
@@ -44,6 +51,7 @@ namespace SlackWebhook
             return this;
         }
 
+        /// <inheritdoc />
         public ISlackMessageBuilder WithUsername(string username)
         {
             if (string.IsNullOrEmpty(username))
@@ -54,6 +62,7 @@ namespace SlackWebhook
             return this;
         }
 
+        /// <inheritdoc />
         public ISlackMessageBuilder WithIcon(IconType iconType, string urlOrEmoji)
         {
             if (string.IsNullOrEmpty(urlOrEmoji))
@@ -72,6 +81,7 @@ namespace SlackWebhook
             return this;
         }
 
+        /// <inheritdoc />
         public ISlackMessageBuilder WithAttachment(Action<ISlackAttachmentBuilder> configureAttachment)
         {
             if (configureAttachment == null)

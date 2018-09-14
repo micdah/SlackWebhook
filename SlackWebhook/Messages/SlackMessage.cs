@@ -132,7 +132,7 @@ namespace SlackWebhook.Messages
 
         /// <summary>
         /// Checks the current state using <see cref="Validate"/> and throws a 
-        /// <see cref="SlackMessageValidationException"/> with all validations erros, if any 
+        /// <see cref="SlackMessageValidationException"/> with all validations errors, if any 
         /// are found.
         /// </summary>
         internal void ThrowIfInvalid()

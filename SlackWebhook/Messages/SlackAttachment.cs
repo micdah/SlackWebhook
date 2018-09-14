@@ -311,6 +311,19 @@ namespace SlackWebhook.Messages
                     }
                 }
             }
+            
+            // Validate any actions (if present)
+            if (Actions != null)
+            {
+                foreach (var action in Actions)
+                {
+                    if (!action.Validate(ref validationErrors))
+                    {
+                        validationErrors.Add(new ValidationError(nameof(SlackAttachment), nameof(Actions),
+                            "Action validation failed"));
+                    }
+                }
+            }
 
             return !validationErrors.Any();
         }

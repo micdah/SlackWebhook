@@ -7,7 +7,7 @@
   See [Attaching buttons to messages](https://api.slack.com/docs/message-attachments#attaching_buttons_to_messages)
   for more.
   
-  Example:
+  **Example**:
     ```cs
     await client.SendAsync(b => b
         .WithText("Look at my buttons")
